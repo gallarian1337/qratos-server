@@ -20,6 +20,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $publicId = null;
+
     #[ORM\Column(type: 'string', length: 180, nullable: true)]
     private ?string $email = null;
 
@@ -68,6 +71,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPublicId(): ?int
+    {
+        return $this->publicId;
+    }
+
+    public function setPublicId(int $publicId): static
+    {
+        $this->publicId = $publicId;
+
+        return $this;
     }
 
     public function getEmail(): ?string
