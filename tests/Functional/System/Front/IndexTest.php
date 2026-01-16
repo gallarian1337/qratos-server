@@ -14,7 +14,7 @@ final class IndexTest extends WebTestCase
     private KernelBrowser $client;
     private UrlGeneratorInterface $urlGenerator;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->client = self::createClient();
         $this->urlGenerator = $this->client->getContainer()->get(UrlGeneratorInterface::class);

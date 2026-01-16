@@ -12,7 +12,7 @@ final class IndexRouterTest extends WebTestCase
 {
     private KernelBrowser $client;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->client = self::createClient();
     }

@@ -10,6 +10,7 @@
 
     <rule ref="PSR12"/>
 
+    <exclude-pattern>public/assets/*</exclude-pattern>
     <exclude-pattern>tests/bootstrap.php</exclude-pattern>
     <file>src/</file>
     <file>tests/</file>

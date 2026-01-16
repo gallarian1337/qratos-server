@@ -9,3 +9,7 @@
 
 controllers:
     resource: routing.controllers
+
+front_logout:
+    path: /deconnexion
+    methods: POST
