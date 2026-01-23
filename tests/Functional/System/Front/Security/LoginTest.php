@@ -27,11 +27,42 @@ final class LoginTest extends WebTestCase
     public function testLoginIsSuccessfully(): void
     {
         $this->form['email'] = 'admin1@quizz.test';
-        $this->form['password'] = '12345';
+        $this->form['password'] = '1234567891011';
         $this->client->submit($this->form);
 
         $this->assertResponseRedirects($this->urlGenerator->generate('front_index'));
         $this->client->followRedirect();
+    }
+
+    public function testLoginWithRememberMe(): void
+    {
+        $this->form['email'] = 'admin1@quizz.test';
+        $this->form['password'] = '1234567891011';
+        $this->form['_remember_me'] = true;
+        $this->client->submit($this->form);
+
+        $this->assertResponseRedirects($this->urlGenerator->generate('front_index'));
+        $this->client->followRedirect();
+
+        $cookies = $this->client->getCookieJar();
+        $this->assertNotNull($cookies->get('QRATOS_REMEMBER_ME'));
+    }
+
+    public function testRememberMePersistsAfterLogin(): void
+    {
+        $this->form['email'] = 'admin1@quizz.test';
+        $this->form['password'] = '1234567891011';
+        $this->form['_remember_me'] = true;
+        $this->client->submit($this->form);
+
+        $this->client->followRedirect();
+
+        // on vérifie que le cookie "QRATOS_REMEMBER_ME" existe
+        $rememberMeCookie = $this->client->getCookieJar()->get('QRATOS_REMEMBER_ME');
+        $this->assertNotNull($rememberMeCookie, 'Le cookie "QRATOS_REMEMBER_ME" doit être présent');
+
+        $this->client->request(Request::METHOD_GET, $this->urlGenerator->generate('front_profile_index'));
+        $this->assertResponseIsSuccessful();
     }
 
     #[DataProvider('invalidData')]

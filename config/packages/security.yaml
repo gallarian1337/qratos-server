@@ -30,6 +30,10 @@ security:
                 # where to redirect after logout
                 # target: app_any_route
 
+            remember_me:
+                secret: '%kernel.secret%'
+                name: 'QRATOS_REMEMBER_ME'
+                path: /
             # Activate different ways to authenticate:
             # https://symfony.com/doc/current/security.html#the-firewall
 

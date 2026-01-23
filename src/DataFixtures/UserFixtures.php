@@ -22,7 +22,7 @@ final class UserFixtures extends Fixture
         $admin1->setEmail('admin1@quizz.test');
         $admin1->setNickname('admin1');
         $admin1->setRoles(['ROLE_ADMIN']);
-        $admin1->setPassword($this->passwordHasher->hashPassword($admin1, '12345'));
+        $admin1->setPassword($this->passwordHasher->hashPassword($admin1, '1234567891011'));
         $this->addReference('admin1', $admin1);
 
         $manager->persist($admin1);
@@ -32,7 +32,7 @@ final class UserFixtures extends Fixture
         $admin2->setEmail('admin2@quizz.test');
         $admin2->setNickname('admin2');
         $admin2->setRoles(['ROLE_ADMIN']);
-        $admin2->setPassword($this->passwordHasher->hashPassword($admin2, '12345'));
+        $admin2->setPassword($this->passwordHasher->hashPassword($admin2, '1234567891011'));
         $this->addReference('admin2', $admin2);
 
         $manager->persist($admin2);

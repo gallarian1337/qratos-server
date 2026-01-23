@@ -1,0 +1,20 @@
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: #000;
+}
+
+.q-btn-link {
+    border: none;
+    background-color: inherit;
+    padding: 0;
+    cursor: pointer;
+}
+
+label:has(+ input:required)::after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
