@@ -1,4 +1,17 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    {% block content %}{% endblock %}
+    <header>
+        <nav>
+            <a href="{{ path('front_login') }}">connexion</a>
+            <a href="{{ path('front_registration') }}">inscription</a>
+            <form name="logout" action="{{ path('front_logout') }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                <button type="submit">deconnexion</button>
+            </form>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer></footer>
 {% endblock %}

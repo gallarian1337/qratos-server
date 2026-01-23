@@ -22,7 +22,7 @@ security:
             form_login:
                 login_path: front_login
                 check_path: front_login
-                username_parameter: identifier
+                username_parameter: email
                 password_parameter: password
                 enable_csrf: true
             logout:

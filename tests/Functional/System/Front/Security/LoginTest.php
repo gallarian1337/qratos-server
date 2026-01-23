@@ -26,7 +26,7 @@ final class LoginTest extends WebTestCase
 
     public function testLoginIsSuccessfully(): void
     {
-        $this->form['identifier'] = 'admin1@quizz.test';
+        $this->form['email'] = 'admin1@quizz.test';
         $this->form['password'] = '12345';
         $this->client->submit($this->form);
 
@@ -37,7 +37,7 @@ final class LoginTest extends WebTestCase
     #[DataProvider('invalidData')]
     public function testForm(array $data, string $msgError): void
     {
-        $this->form['identifier'] = $data['identifier'];
+        $this->form['email'] = $data['identifier'];
         $this->form['password'] = $data['password'];
         $this->client->submit($this->form);
 
@@ -49,16 +49,23 @@ final class LoginTest extends WebTestCase
 
     public static function invalidData(): iterable
     {
-        yield 'empty identifier' => [
+        yield 'empty email' => [
             'data' => [
-                'identifier' => '',
+                'email' => '',
+                'password' => '12345'
+            ],
+            'msgError' => 'Invalid credentials.'
+        ];
+        yield 'invalid format email' => [
+            'data' => [
+                'email' => 'email-test',
                 'password' => '12345'
             ],
             'msgError' => 'Invalid credentials.'
         ];
         yield 'empty password' => [
             'data' => [
-                'identifier' => 'admin1@quizz.test',
+                'email' => 'admin1@quizz.test',
                 'password' => ''
             ],
             'msgError' => 'Invalid credentials.'

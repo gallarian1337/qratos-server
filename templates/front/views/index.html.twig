@@ -2,4 +2,7 @@
 {% block title 'accueil' %}
 {% block content %}
     <h1>accueil</h1>
+    {% if app.user %}
+        <p>bonjour {{ app.user.nickname }}, vous avez le rôle: {{ app.user.role }}</p>
+    {% endif %}
 {% endblock %}
