@@ -18,6 +18,11 @@
             {{ form_widget(form.password) }}
             {{ form_errors(form.password) }}
         </div>
+        <div>
+            {{ form_label(form.avatar) }}:
+            {{ form_widget(form.avatar) }}
+            {{ form_errors(form.avatar) }}
+        </div>
         <button type="submit">m'inscrire</button>
     {{ form_end(form) }}
 {% endblock %}

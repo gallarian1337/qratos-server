@@ -41,7 +41,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $nickname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $avatarUrl = null;
+    private ?string $avatar = null;
+
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $platform = 'local';
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $accessToken = null;
@@ -168,14 +171,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAvatarUrl(): ?string
+    public function getAvatar(): ?string
     {
-        return $this->avatarUrl;
+        return $this->avatar;
     }
 
-    public function setAvatarUrl(?string $avatarUrl): static
+    public function setAvatar(?string $avatar): static
     {
-        $this->avatarUrl = $avatarUrl;
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getPlatform(): ?string
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(string $platform): static
+    {
+        $this->platform = $platform;
 
         return $this;
     }

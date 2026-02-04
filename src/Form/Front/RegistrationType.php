@@ -7,6 +7,7 @@ namespace App\Form\Front;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -76,6 +77,10 @@ class RegistrationType extends AbstractType
                         maxMessage: 'le mot de passe doit faire au maximum ' . self::MAXLENGTH_PASSWORD . ' caracteres.'
                     )
                 ]
+            ])
+            ->add('avatar', FileType::class, [
+                'label' => 'Avatar',
+                'required' => false
             ])
         ;
     }
