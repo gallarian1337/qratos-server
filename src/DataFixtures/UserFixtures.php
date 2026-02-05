@@ -37,6 +37,28 @@ final class UserFixtures extends Fixture
 
         $manager->persist($admin2);
 
+        // fake users Twitch
+        for ($i = 1; $i <= 5; $i++) {
+            $userTwitch = new User();
+            $userTwitch->setEmail('twitch-' . $i . '@quizz.test');
+            $userTwitch->setNickname('twitch-' . $i);
+            $userTwitch->setRoles(['ROLE_USER']);
+            $userTwitch->setAccessToken('twitch-' . $i . '-token');
+
+            $manager->persist($userTwitch);
+        }
+
+        // simple user
+        for ($i = 1; $i <= 5; $i++) {
+            $user = new User();
+            $user->setEmail('user-' . $i . '@quizz.test');
+            $user->setNickname('user-' . $i);
+            $user->setRoles(['ROLE_USER']);
+            $user->setPassword($this->passwordHasher->hashPassword($user, '12345'));
+
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
 }

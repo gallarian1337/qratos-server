@@ -1,0 +1,8 @@
+{% extends 'front/layout.html.twig' %}
+{% block title 'liste des questions' %}
+{% block content %}
+    <h1>liste des questions</h1>
+    {% for q in questions %}
+        <p>{{ q.question }}</p>
+    {% endfor %}
+{% endblock %}

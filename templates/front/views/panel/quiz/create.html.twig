@@ -1,0 +1,43 @@
+{% extends 'front/layout.html.twig' %}
+{% block title 'ajout d\'une qestion' %}
+{% block content %}
+    <h1>creer une question</h1>
+        {{ form_start(form) }}
+        <div>
+            {{ form_label(form.question) }}
+            {{ form_widget(form.question) }}
+            {{ form_errors(form.question) }}
+        </div>
+        <div>
+            {{ form_label(form.userQuestion.description) }}
+            {{ form_widget(form.userQuestion.description) }}
+            {{ form_errors(form.userQuestion.description) }}
+        </div>
+        <div>
+            {{ form_label(form.userQuestion.goodAnswers) }}
+            {{ form_widget(form.userQuestion.goodAnswers) }}
+            {{ form_errors(form.userQuestion.goodAnswers) }}
+        </div>
+        <div>
+            {{ form_label(form.userQuestion.badAnswers) }}
+            {{ form_widget(form.userQuestion.badAnswers) }}
+            {{ form_errors(form.userQuestion.badAnswers) }}
+        </div>
+        <div>
+            {{ form_label(form.userQuestion.duration) }}
+            {{ form_widget(form.userQuestion.duration) }}
+            {{ form_errors(form.userQuestion.duration) }}
+        </div>
+        <div>
+            {{ form_label(form.userQuestion.numberOfPoint) }}
+            {{ form_widget(form.userQuestion.numberOfPoint) }}
+            {{ form_errors(form.userQuestion.numberOfPoint) }}
+        </div>
+        <div>
+            {{ form_label(form.isShared) }}
+            {{ form_widget(form.isShared) }}
+            {{ form_errors(form.isShared) }}
+        </div>
+        <button type="submit">creer</button>
+    {{ form_end(form) }}
+{% endblock %}

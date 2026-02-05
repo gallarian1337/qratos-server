@@ -4,23 +4,29 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Quiz\Question;
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\IdTrait;
+use App\Entity\Trait\PublicIdTrait;
+use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), ORM\Table(name: 'q_users')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_PUBLIC_ID', fields: ['publicId'])]
+#[ORM\Index(name: 'NICKNAME_IDX', columns: ['nickname'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(type: 'integer')]
-    private ?int $publicId = null;
+    use IdTrait;
+    use PublicIdTrait;
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
 
     #[ORM\Column(type: 'string', length: 180, nullable: true)]
     private ?string $email = null;
@@ -62,32 +68,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isSubscription = false;
 
-    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?DateTimeImmutable $createdAt = null;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private ?bool $isDeleted = false;
 
-    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
+    /**
+     * @var Collection<int, Question>
+     */
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'createdBy')]
+    private Collection $questions;
+
+    /**
+     * @var Collection<int, UserQuestion>
+     */
+    #[ORM\OneToMany(targetEntity: UserQuestion::class, mappedBy: 'user')]
+    private Collection $userQuestion;
 
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getPublicId(): ?int
-    {
-        return $this->publicId;
-    }
-
-    public function setPublicId(int $publicId): static
-    {
-        $this->publicId = $publicId;
-
-        return $this;
+        $this->questions = new ArrayCollection();
+        $this->userQuestion = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -255,26 +255,74 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function isDeleted(): ?bool
     {
-        return $this->createdAt;
+        return $this->isDeleted;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    public function setIsDeleted(bool $isDeleted): static
     {
-        $this->createdAt = $createdAt;
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeImmutable
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
     {
-        return $this->updatedAt;
+        return $this->questions;
     }
 
-    public function setUpdatedAt(?DateTimeImmutable $updatedAt): static
+    public function addQuestion(Question $question): static
     {
-        $this->updatedAt = $updatedAt;
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getCreatedBy() === $this) {
+                $question->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserQuestion>
+     */
+    public function getUserQuestion(): Collection
+    {
+        return $this->userQuestion;
+    }
+
+    public function addUserQuestion(UserQuestion $userQuestion): static
+    {
+        if (!$this->userQuestion->contains($userQuestion)) {
+            $this->userQuestion->add($userQuestion);
+            $userQuestion->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserQuestion(UserQuestion $userQuestion): static
+    {
+        if ($this->userQuestion->removeElement($userQuestion)) {
+            // set the owning side to null (unless already changed)
+            if ($userQuestion->getUser() === $this) {
+                $userQuestion->setUser(null);
+            }
+        }
 
         return $this;
     }
